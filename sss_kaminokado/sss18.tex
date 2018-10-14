@@ -155,6 +155,25 @@ only accepted ones will appear in the Proceedings.
 \end{split}
     \label{eq:6} 
 \end{equation}
+%
+%
+ カルマンフィルタの更新フェーズ
+\begin{equation}
+    y_{t} = z_{t} - H_{t}\hat{x}_{t+\Delta t|t}
+    \label{eq:7}
+\end{equation}
+%
+%
+\begin{equation}
+    S_{t} = R + H_{t}P_{t+\Delta t|t}H_{t}^{T}
+    \label{eq:8}
+\end{equation}
+%
+%
+\begin{equation}
+    \hat{x}_{t+\Delta t|t+\Delta t} = x_{t+\Delta t|t+\Delta t}
+    \label{eq:9}
+\end{equation}
 
 
 \section{カルマンフィルタに用いる分散の取得実験}
