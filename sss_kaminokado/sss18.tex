@@ -67,11 +67,12 @@ We verify our proposed method by Matlab.
     \vspace{5mm}
     \centerline{\epsfig{file=aigamo_robot_model.eps,width=50mm}}
     \caption{Robot model}
+    \label{fig:1}
 \end{figure}
 \section{カルマンフィルタの説明}
 この章では提案するカルマンフィルタのモデルを説明をする．
-本研究ではアイガモロボットを対象としており，このロボットは２次元平面上を移動する．
-ロボットは図に示すような差動二輪車両モデルである．
+ロボットは図\label{fig1}に示すような差動二輪車両モデルであり，2次元平面を移動するものとする．
+
 カルマンフィルタの予測フェーズ
 \begin{align}
     \hat{x}_{t+ \Delta t|t} &= F_{t} \hat{x}_{t} + B_{t} u_{t} \nonumber \\
