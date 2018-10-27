@@ -17,29 +17,32 @@
 \begin{document}
 \date{}
 \title{\LARGE{\bf
-The 50th ISCIE International \\
- Its Applications\\
-Instruction for Authors}
+Direction Control of Moving Vehicle using Dual RTK-GNSS and Kalman Filter}
 }
 \author{
 Shingo Kaminokado \\
-Dept. of Electrical and Electronic Systems, Okayama University of Science\\
-Ridai-cho 1-1, Kita-ku, Okayama, 700-0005 Japan\\
-\\E-mail: \texttt{xxx@sci-sss.org}
+Dept. of Computer Science and Engineering, The University of Aizu\\
+Turuga, Ikki-machi, Aizuwakamatsu City, Fukushima, 965-8580 \\
+\\E-mail: \texttt{m5211128@u-aizu.ac.jp}
 }
 
 \maketitle
 \thispagestyle{empty}
 %ABSTRACT
 \abstract{
-    We have developed a weeding robot(Aigamo Robot). This robot works automatically using 
-    Global Navigation Satellite System (GNSS). Previous independent positioning measure 
-    included several meter differences and dispersion of the positions and directions. 
-    Therefore, in this study, we implement the Real Time Kinematic-GNSS (RTK-GNSS) on 
-    the right and left side of the robot in order to reduce these errors. T
-    his method can obtain the position and direction more acculately when the robot is not 
-    only in operation, but also under suspending. Moreover, this method can suppress 
-    the errors within about 10 cm to the south-southeast when the path tracking.
+We have been investing a weeding robot. The robot estimates its position with 
+Global Navigation Satellite System(GNSS) but includes errors, which are around 
+a few meters, when it does single positioning. The direction of the robot deviates 
+a lot as it is based on location information. Hence by using the more accurate Real 
+Time Kinematic GNSS (RTK-GNSS), the positional accuracy improved. However, since 
+the direction of the robot was estimated from the difference with the position of 
+the previous robot, it was difficult to estimate the direction while posing. Therefore, 
+we presumed self-position with two single frequency RTK-GNSS receivers which become 
+to be available recently and are economically friendly. By setting the normal vector
+calculated from the left and right position information with two modules as 
+the direction of the robot, it made it possible to estimate the direction not 
+only while running but also posing. Moreover, we will tackle construction of position 
+estimation system with Kalman filter.
 }
 
 
@@ -146,25 +149,6 @@ We verify our proposed method by Matlab.
 \end{split}
     \label{eq:6} 
 \end{equation}
-%
-%
- カルマンフィルタの更新フェーズ
-\begin{equation}
-    y_{t} = z_{t} - H_{t}\hat{x}_{t+\Delta t|t}
-    \label{eq:7}
-\end{equation}
-%
-%
-\begin{equation}
-    S_{t} = R + H_{t}P_{t+\Delta t|t}H_{t}^{T}
-    \label{eq:8}
-\end{equation}
-%
-%
-\begin{equation}
-    \hat{x}_{t+\Delta t|t+\Delta t} = x_{t+\Delta t|t+\Delta t}
-    \label{eq:9}
-\end{equation}
 
 
 \section{カルマンフィルタに用いる分散の取得実験}
@@ -173,60 +157,41 @@ Regarding the styles of your manuscript, please conform to the following
 %instructions. 
 
 \subsection{Title}
-The title should be centered across the top of the first page and should 
-be in a distinctive point size or font.
-
 \subsection{Author's Names and Address}
-The authors' names and addresses should be centered below the title.
-It is desirable that these lines are typed in at least eleven point font size,
-but the particular point sizes and fonts are not critical and are left to the
-direction of the authors.
-Times new Roman 12 point is suggested.
-Please include your E-Mail address. 
-
 \subsection{Headings}
-Main headings are to be column centered in a bold font without an underline.
-They may be numbered, if so desired. 
-
-Subheadings should be in a bold font or underlined lowercase with initial
-capitals.
-They should start at the left-hand margin on a separate line.
-
-Sub-subheadings are to be in a bold font or underlined type.
-They should be indented and run in at the beginning of the paragraph.
-
 \subsection{Figures and Tables} 
-Figures and photos should be consecutively numbered like Fig{.}~1, Fig{.}~2,
-Figures should be inserted near their citation or at the end of the manuscript.
-Large figures and tables may span across both columns if necessary.
-Figure captions should be placed below the figures. 
+
 
 \subsection{References}
-List and number all references at the end of the paper as shown below.
-Number reference citations consecutively in square brackets [1].
+
 
 \subsection{Page Numbers}
-Do not write page numbers on your manuscript.
-These will be inserted later by the proceedings printer together with
-the session number and conference identifications.
 
 
-\section{Manuscript Submission}
-Authors are requested to send their manuscripts electronically by
-{\bf July 31, 2018} on the web:
-\begin{center}
-http://sci-sss.org/sss2018/sub/submission.php
-\end{center}
+
+\section{Simulation using Kalman filter}
+%先行研究より、我々の測位システムの位置と向きの分散共分散行列を算出した．
+%これを用いてDual RTK-GNSSにおけるカルマンフィルターの優位性についてシミュレーションする．
+%
+%
+%
+%
+%
+%
+
+\subsection{Result}
+\begin{figure}
+\centerline{\epsfig{file=process_noise_S.eps,width=100mm}}
+\caption{Large Process noise}
+\centerline{\epsfig{file=process_noise_M.eps,width=100mm}}
+\caption{Middle Process noise}
+\centerline{\epsfig{file=process_noise_L.eps,width=100mm}}
+\caption{Small process noise}
+\end{figure}
+\subsection{Disucussion}
 
 
 \section{Conclusions}
-
-Please make an extra effort to adhere to these guidelines as the quality
-of the publications depends on you.
-Thank you for your cooperation and contribution.
-We are looking forward to seeing you at the 49th ISCIE International Symposium
-on Stochastic Systems Theory and Its Applications (SSS'17).
-
 
 \begin{thebibliography}{99}
 \bibitem{aigamo}
@@ -257,7 +222,7 @@ Emlid Reach RS, https://docs.emlid.com/eachrs/
 
 \bibitem{reach} 
 Emlid Reach, https://docs.emlid.com/each/
-
 \end{thebibliography}
 \end{document}
+
 % end of sss10.tex
