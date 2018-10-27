@@ -20,7 +20,7 @@
 Direction Control of Moving Vehicle using Dual RTK-GNSS and Kalman Filter}
 }
 \author{
-Shingo Kaminokado \\
+Shingo Kaminokado, Jun Ogawa, Keita Nakamura, Keitaro Naruse \\
 Dept. of Computer Science and Engineering, The University of Aizu\\
 Turuga, Ikki-machi, Aizuwakamatsu City, Fukushima, 965-8580 \\
 \\E-mail: \texttt{m5211128@u-aizu.ac.jp}
@@ -65,162 +65,161 @@ We verify our proposed method by Matlab.
 
 \begin{figure}
     \vspace{5mm}
-    \centerline{\epsfig{file=aigamo_robot_model.eps,width=50mm}}
+    \centerline{\epsfig{file=./figure/aigamo_robot_model.eps,width=50mm}}
     \caption{Robot model}
-    \label{fig:1}
 \end{figure}
-\section{カルマンフィルタの説明}
-この章では提案するカルマンフィルタのモデルを説明をする．
-ロボットは図\label{fig1}に示すような差動二輪車両モデルであり，2次元平面を移動するものとする．
 
-カルマンフィルタの予測フェーズ
-\begin{align}
-    \hat{x}_{t+ \Delta t|t} &= F_{t} \hat{x}_{t} + B_{t} u_{t} \nonumber \\
-                            &= \hat{x}_{t} + B_{t} u_{t}
-    \label{eq:1}
-\end{align}
-%
-%
-\begin{align}
-    \hat{P}_{t+ \Delta t|t} &= F_{t} P_{t|t} F_{t}^{T} + Q \nonumber \\
-                            &= P_{t|t} + Q
-    \label{eq:2}
-\end{align}
-%
-%
+\section{カルマンフィルタの説明}
+この章ではカルマンフィルタの説明を行う．アイガモロボットは２次元平面上を移動する．ロボットの中心座標を$(x,y)$, $x$軸となす角を$\theta$とする．ロボットの状態ベクトル$x$は式１と表現される．
 \begin{equation}
-    \begin{bmatrix}
-    \hat{x}_{t+ \Delta t|t} \\
-    \hat{y}_{t+ \Delta t|t} \\
-    \hat{\theta}_{t+ \Delta t|t}
-    \end{bmatrix} 
-    =
-    \begin{bmatrix}
-        \hat{x}_{t|t} \\
-        \hat{y}_{t|t} \\
-        \hat{\theta}_{t|t}
-    \end{bmatrix} 
-    +
-    \begin{bmatrix}
-        \Delta t cos\hat{\theta}_{t|t} &0 \\
-        \Delta t sin\hat{\theta}_{t|t} &0 \\
-        0                              &{\Delta}t
-    \end{bmatrix}
-    \begin{bmatrix}
-        v_{t} \\
-        \omega_{t}
-    \end{bmatrix}
-    \label{eq:3} 
+    x = \begin{bmatrix}
+        x \\
+        y \\
+        \theta
+        \end{bmatrix} 
+\end{equation}
+ロボットは左右の速度$v_{L}$,$v_{R}$によって制御され，制御ベクトル$u$は式２と表現される．
+\begin{equation}
+    u = \begin{bmatrix}
+        v_{L} \\
+        v_{R} 
+        \end{bmatrix} 
 \end{equation}
 %
 %
+カルマンフィルタの一般式からロボットの推定位置は式３のように表現される
 \begin{equation}
-    e_{t} = \hat{x}_{t} - x_{t} =
-    \begin{bmatrix}
-        \hat{x}_{t} - x_{t} \\
-        \hat{y}_{t} - y_{t} \\
-        \hat{\theta}_{t} - \theta_{t}
-    \end{bmatrix}
+    \hat{x_{k}} =F\hat{x}_{k-1} + Bu_{k} + w_{k}
+\end{equation}
+where, $F = \begin{bmatrix} 1 & 0 & 0 \\  0 & 1 & 0 \\  0 & 0 & 1 \end{bmatrix}$,
+$B = \begin{bmatrix} dt * cos\theta & 0 \\  dt * sin\theta & 0 \\ 0 & 1 \end{bmatrix}$,\\
+$w$ is process noise.\\
+%
+%
+また，誤差共分散行列の更新は式４のように表現される
+\begin{equation}
+    P_{k} = F P_{k-1} F^{T} + Q
     \label{eq:4}
 \end{equation}
 %
 %
-
+GPSよるロボットの位置は式５のように表現される
 \begin{equation}
-    P_{t|t} = E
-    \begin{pmatrix}
-        e_{t} e_{t}^{T}
-    \end{pmatrix}
+    z_{k} = Hx_{k} + v_{k}
     \label{eq:5}
 \end{equation}
-%
-%
+where，$H = \begin{bmatrix} 1 & 0 & 0 \\  0 & 1 & 0 \\  0 & 0 & 1 \end{bmatrix}$\\ \\
+カルマンフィルタの更新フェーズでは式6−9の式で観測誤差共分散行列の更新，カルマンゲインの修正，推定状態量の更新を行う．
 \begin{equation}
-    \begin{split}
-    \begin{bmatrix}
-    \sigma_{xx,t|t+\Delta t} &\sigma_{xy,t|t+\Delta t} &\sigma_{xz,t|t+\Delta t} \\
-    \sigma_{yx,t|t+\Delta t} &\sigma_{yy,t|t+\Delta t} &\sigma_{yz,t|t+\Delta t} \\
-    \sigma_{zx,t|t+\Delta t} &\sigma_{zy,t|t+\Delta t} &\sigma_{zz,t|t+\Delta t} 
-    \end{bmatrix} \\
-    = 
-    \begin{bmatrix}
-        \sigma_{xx,t|t} &\sigma_{xy,t|t} &\sigma_{xz,t|t} \\
-        \sigma_{yx,t|t} &\sigma_{yy,t|t} &\sigma_{yz,t|t} \\
-        \sigma_{zx,t|t} &\sigma_{zy,t|t} &\sigma_{zz,t|t}
-    \end{bmatrix} 
-    +
-    \begin{bmatrix}
-        q_{x}^{2} &0         &0 \\
-        0         &q_{y}^{2} &0 \\
-        0         &0         &q_{\theta}^{2}
-    \end{bmatrix}
-\end{split}
-    \label{eq:6} 
+    y_{k} = z_{k} - H\hat{x}_{k}
+    \label{eq:6}
 \end{equation}
-
-カルマンフィルタの更新フェーズ
+%
+%
 \begin{equation}
-    y_{t} = z_{t} - H_{t}\hat{x}_{t+\Delta t|t}
+    S_{k} = R + HP_{k}H^{T}
     \label{eq:7}
 \end{equation}
 %
 %
 \begin{equation}
-    S_{t} = R + H_{t}P_{t+\Delta t|t}H_{t}^{T}
+    \hat{x}_{k} = \hat{x}_{k}+K_{k}y_{k}
     \label{eq:8}
 \end{equation}
-%
-%
+
 \begin{equation}
-    \hat{x}_{t+\Delta t|t+\Delta t} = x_{t+\Delta t|t+\Delta t}
+    P_{k} = (I-K_{k})P_{k}(I-K_{k})^{T} + K_{k}RK_{k}
     \label{eq:9}
 \end{equation}
 
 
-
 \section{カルマンフィルタに用いる分散の取得実験}
-
-Regarding the styles of your manuscript, please conform to the following 
-%instructions. 
-
-\subsection{Title}
-\subsection{Author's Names and Address}
-\subsection{Headings}
-\subsection{Figures and Tables} 
-
-
-\subsection{References}
-
-
-\subsection{Page Numbers}
-
+%
+%
+%
+%
+%
 
 
 \section{Simulation using Kalman filter}
 %先行研究より、我々の測位システムの位置と向きの分散共分散行列を算出した．
-%これを用いてDual RTK-GNSSにおけるカルマンフィルターの優位性についてシミュレーションする．
+%これを用いてDual RTK-GNSSにおけるカルマンフィルタの優位性についてシミュレーションする．
+%
+%ロボットの左車輪は0.2m/s, 右車輪は0.3m/sの速度で反時計周りのシーケンス動作
+%車輪には路面状況を考慮して大中小のプロセスノイズを与える．
+%アイガモロボットの走行する路面はプロセスノイズ大を想定している．
+%車輪間距離0.35m, ロボットの制御0.01s/回(100Hz), GPSの更新0.2s/回(5Hz)
 %
 %
 %
-%
-%
-%
+
+\begin{table}[h]
+    \caption{Parameters for simulation}
+    \label{table:table1}
+    \centering
+    \begin{tabular}{ll}
+        \hline
+        Parameter & Value \\
+        \hline \hline
+        車輪間距離 \(B\) & \(0.35[m]\) \\
+        左車輪速度 \(v_L\) & \(0.2 [m/s]\) \\
+        右車輪速度 \(v_R\) & \(0.3 [m/s]\) \\
+        ロボットの制御周波数 & \(100 [Hz]\) \\
+        GNSSの更新周波数 & \(5 [Hz]\) \\
+       \hline
+    \end{tabular}
+\end{table}
+
+% \begin{table}[h]
+%     \caption{車輪外乱}
+%     \label{table:table2}
+%     \centering
+%     \begin{tabular}{ll}
+%         \hline
+%         外乱の大きさ & 分散共分散行列 \\
+%         \hline \hline
+%         small & 
+%         \begin{equation} 
+%             Q = 
+%             \begin{bmatrix}
+%             0.1^2 &0 \\
+%             0     &0.1^2 
+%             \end{bmatrix}
+%         \end{equation} \\
+%         %\hline
+%         %middle & \(0.2 [m/s]\) \\
+%         %large & \(0.3 [m/s]\) \\
+%        \hline
+%     \end{tabular}
+% \end{table}
 
 \subsection{Result}
+%車輪外乱大中小の時のシミュレーション結果をFiure 1~3にそれぞれ示した．
+%
+%
+%
 \begin{figure}
-\centerline{\epsfig{file=process_noise_S.eps,width=100mm}}
-\caption{Large Process noise}
-\centerline{\epsfig{file=process_noise_M.eps,width=100mm}}
-\caption{Middle Process noise}
-\centerline{\epsfig{file=process_noise_L.eps,width=100mm}}
+\centerline{\epsfig{file=./figure/process_noise_S.eps,width=100mm}}
 \caption{Small process noise}
+\centerline{\epsfig{file=./figure/process_noise_M.eps,width=100mm}}
+\caption{Middle process noise}
+\centerline{\epsfig{file=./figure/process_noise_L.eps,width=100mm}}
+\caption{Large process noise}
 \end{figure}
 \subsection{Disucussion}
-
-
-
+%
+%
+%
+%
+%
 
 \section{Conclusions}
+%
+%
+%
+%
+%
+%
 
 \begin{thebibliography}{99}
 \bibitem{aigamo}
@@ -245,7 +244,7 @@ Field Mobile Robot navigated by RTK-GPS and FOG,
 {\it Journal of the Japanese Society of Agricultural Machinery}, Vol.63, No.5, pp.74-79, 2001.(in Japanese)
 \bibitem{auto-weeding}
 S. Masahiro, N. Yoshisada, T. Katsuhiko and K. Kyou: 
-{\it Journal of the Japanese Society of Agricultural Machinery}, Vol.72, No.3, pp.276-282, 2010. (in Japanese)
+{\it Journal of the Japanese Society of Agricultural Machinery}, Vol.72, No.3, pp.276-282, 2010.(in Japanese)
 \bibitem{reach rs} 
 Emlid Reach RS, https://docs.emlid.com/eachrs/
 
