@@ -32,41 +32,35 @@ Ridai-cho 1-1, Kita-ku, Okayama, 700-0005 Japan\\
 \thispagestyle{empty}
 %ABSTRACT
 \abstract{
-This document provides instructions for authors for preparing and submitting
-the manuscripts for the Proceedings of the 49th ISCIE International Symposium
-on Stochastic System Theory and Its Applications.
-This document (including this abstract) itself is an example of the desired layout
-for camera-ready papers.
-The guidelines detailed in this document will enable the Conference to maintain
-uniformity in the final proceedings and to avoid additional publication charges.
-To ensure high-quality proceedings, readability of your original manuscript is of
-paramount importance.
-Also, adherence to deadlines is critical because a great portion of the publication
-process is performed sequentially.  
+    We have developed a weeding robot(Aigamo Robot). This robot works automatically using 
+    Global Navigation Satellite System (GNSS). Previous independent positioning measure 
+    included several meter differences and dispersion of the positions and directions. 
+    Therefore, in this study, we implement the Real Time Kinematic-GNSS (RTK-GNSS) on 
+    the right and left side of the robot in order to reduce these errors. T
+    his method can obtain the position and direction more acculately when the robot is not 
+    only in operation, but also under suspending. Moreover, this method can suppress 
+    the errors within about 10 cm to the south-southeast when the path tracking.
 }
 
 
 \section{Introduction}
-
-The manuscript for the Proceedings should be prepared in accordance with the present
-instructions.
-The Symposium Proceedings will be published at the on-line electronic journal cite 
-J-Stage (Japan Science and Technology Information Aggregator, Electronic). 
-Authors are requested to prepare the camera-ready manuscripts on {\bf A4} paper,
-written in English, in {\bf PDF} format.
-The size of the electronic file should not exceed {\bf 5MB}.
-
-The manuscript should not exceed {\bf 10 pages} (6 pages are recommended) including
-figures, tables, photos, references and appendices.
-The author who wishes to write the manuscript more than 10 pages or more than 5MB
-memory should contact with the SSS'17 Steering Committee for permission.
- 
-On A4 paper, the Conference requires a font size of {\bf 10 points or greater}.
-Some technical formatting programs print mathematical formulas in italic type, with
-subscripts and superscripts in a slightly smaller font size. 
-
-In order to assure a high-quality Proceedings, all manuscripts will be reviewed and
-only accepted ones will appear in the Proceedings.
+我々の研究グループは小型の水田除草用ロボット(アイガモロボット)を開発している.[1]
+このロボットは水田内を自動で走行し，除草を行う．
+ロボットは広大な環境を走行するため，ロボットの自己位置を知ることは重要である．
+ロボットの自己位置を知るには，カメラやビーコンなどを用いる手法が存在する．
+しかしながら，天候などの外乱の影響を受けやすいため，我々のロボットには適用が困難である．
+そのため，自己位置を知る手法としてGlobal Navigation Satellite System(GNSS)を採用する．
+従来のロボットは単独測位法を用いて，ロボットの位置を取得している．
+しかし，位置や向きの誤差やばらつきが大きくずれる問題がある．
+そのため，より高精度なReal Time Kinematic-GNSS(RTK-GNSS)を用いる．
+GNSSモジュールは主に２種類の搬送波を受信する．2周波受信機は高価で大きいため，我々の小型のロボットには搭載することができない．
+一方で，近年マルチGNSS技術によって衛生数が増加し，１周波の搬送波のみ取得できる安価で小型なGNSSモジュールが市場に出回るようになった．
+そこで我々のグループは安価で小型なGNSSモジュールを採用した．
+しかし，一つのモジュールだけではロボットの向きの推定が困難である．我々のグループは２つのGNSSをロボットの左右に設置した．
+先行研究ではそれらの精度を調査し，高精度な測位が可能であることを示した[2]．
+本研究では我々の測位システムに先行研究で取得したデータ適用したカルマンフィルタを導入することによって，
+より高精度なGNSS測位システムの提案を行う．
+カルマンフィルタの検証にはシミュレーションを用いる．
 
 
 \section{カルマンフィルタの説明}
@@ -238,14 +232,36 @@ on Stochastic Systems Theory and Its Applications (SSS'17).
 
 
 \begin{thebibliography}{99}
-\bibitem{foo}
-R. E. Kalman and R. S. Bucy: 
-New Results in linear filtering and prediction, 
-{\it Trans. ASME, J. Basic Eng.}, 82 D, pp.95-108, 1960.
-\bibitem{bar}
-A. H. Jazwinsky: 
-{\it Stochastic Process and Filtering Theory}, Academic Press, N.Y., 1970.
+\bibitem{aigamo}
+M. Taku, O. Yoshiaki, O. Jun, N. Keita and N. Keitaro:
+Mechanism of generating drawbar pull of rod wheel on loose soil,
+{\it 22rd International Symposium on Artificial Life and Robotics.(AROB)}, Vol.22, No.4, 2017.
+\bibitem{gnss}
+H. J. Christopher and C. Eric:
+Evolution of the global navigation satellitesystem (gnss),
+{\it Proceedings of the IEEE}, Vol.96, No.12, pp.1902-1917, 2008.
+\bibitem{rtk-gps}
+K. Michio. N. Noboru, I. Kazunobu and T. Hideo: 
+Field Mobile Robot navigated by RTK-GPS and FOG, 
+{\it Journal of the Japanese Society of Agricultural Machinery}, Vol.63, No.5, pp.74-79, 2001.(in Japanese)
+
+\bibitem{auto-weeding}
+S. Masahiro, N. Yoshisada, T. Katsuhiko and K. Kyou: 
+
+{\it Journal of the Japanese Society of Agricultural Machinery}, Vol.72, No.3, pp.276-282, 2010.(in Japanese)
+
+
+\bibitem{camera-relate}
+S.Shotaro, H. Zhencheng and F. Thomas:
+Tracking ofFeatUre PointsforVisualSLAM with MultipleCameras
+{\it The Institude of Image Information and Television Engineers}
+
+\bibitem{reach rs} 
+Emlid Reach RS, https://docs.emlid.com/eachrs/
+
+\bibitem{reach} 
+Emlid Reach, https://docs.emlid.com/each/
+
 \end{thebibliography}
 \end{document}
-
 % end of sss10.tex
