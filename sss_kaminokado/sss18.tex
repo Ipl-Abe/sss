@@ -63,9 +63,16 @@ We installed two modules on the both side of the robot because it is difficult t
 In this research, we propose a more accurate self-localization system by introducing the Kalman filter into our positioning system.
 We verify our proposed method by Matlab.
 
+\begin{figure}
+    \vspace{5mm}
+    \centerline{\epsfig{file=aigamo_robot_model.eps,width=50mm}}
+    \caption{Robot model}
+\end{figure}
 \section{カルマンフィルタの説明}
 この章では提案するカルマンフィルタのモデルを説明をする．
-本研究ではアイガモロボットを対象としており，このロボットは２次元平面上を移動する．カルマンフィルタの予測フェーズ
+本研究ではアイガモロボットを対象としており，このロボットは２次元平面上を移動する．
+ロボットは図に示すような差動二輪車両モデルである．
+カルマンフィルタの予測フェーズ
 \begin{align}
     \hat{x}_{t+ \Delta t|t} &= F_{t} \hat{x}_{t} + B_{t} u_{t} \nonumber \\
                             &= \hat{x}_{t} + B_{t} u_{t}
@@ -210,6 +217,8 @@ Regarding the styles of your manuscript, please conform to the following
 \subsection{Disucussion}
 
 
+
+
 \section{Conclusions}
 
 \begin{thebibliography}{99}
@@ -235,7 +244,7 @@ Field Mobile Robot navigated by RTK-GPS and FOG,
 {\it Journal of the Japanese Society of Agricultural Machinery}, Vol.63, No.5, pp.74-79, 2001.(in Japanese)
 \bibitem{auto-weeding}
 S. Masahiro, N. Yoshisada, T. Katsuhiko and K. Kyou: 
-{\it Journal of the Japanese Society of Agricultural Machinery}, Vol.72, No.3, pp.276-282, 2010.(in Japanese)
+{\it Journal of the Japanese Society of Agricultural Machinery}, Vol.72, No.3, pp.276-282, 2010. (in Japanese)
 \bibitem{reach rs} 
 Emlid Reach RS, https://docs.emlid.com/eachrs/
 
