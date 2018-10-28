@@ -89,48 +89,57 @@ We verify our proposed method by Matlab.
 %
 カルマンフィルタの一般式からロボットの推定位置は式３のように表現される
 \begin{equation}
-    \hat{x_{k}} =F\hat{x}_{k-1} + Bu_{k} + w_{k}
+    \hat{x}_{t} =F\hat{x}_{t-1} + Bu_{t} + w_{t}
 \end{equation}
 where, $F = \begin{bmatrix} 1 & 0 & 0 \\  0 & 1 & 0 \\  0 & 0 & 1 \end{bmatrix}$,
-$B = \begin{bmatrix} dt * cos\theta & 0 \\  dt * sin\theta & 0 \\ 0 & 1 \end{bmatrix}$,\\
+$B = \begin{bmatrix} dt * cos\theta & 0 \\  dt * sin\theta & 0 \\ 0 & 1 \end{bmatrix}$, 
 $w$ is process noise.\\
 %
 %
 また，誤差共分散行列の更新は式４のように表現される
 \begin{equation}
-    P_{k} = F P_{k-1} F^{T} + Q
+    P_{t} = F P_{t-1} F^{T} + Q
     \label{eq:4}
 \end{equation}
+ただし，Pは誤差共分散行列を表している. Qはプロセスの共分散行列で，\\ \\$Q = \begin{bmatrix} q_{x}^{2} & 0 & 0 \\  0 & q_{y}^{2} & 0 \\  0 & 0 & q_{\theta}^{2} \end{bmatrix}$\\ \\
 %
 %
-GPSよるロボットの位置は式５のように表現される
+GPSよるロボットの位置$z$は式５のように表現される
 \begin{equation}
-    z_{k} = Hx_{k} + v_{k}
+    z_{t} = Hx_{t} + v_{t}
     \label{eq:5}
 \end{equation}
-where，$H = \begin{bmatrix} 1 & 0 & 0 \\  0 & 1 & 0 \\  0 & 0 & 1 \end{bmatrix}$\\ \\
-カルマンフィルタの更新フェーズでは式6−9の式で観測誤差共分散行列の更新，カルマンゲインの修正，推定状態量の更新を行う．
+where，$H = \begin{bmatrix} 1 & 0 & 0 \\  0 & 1 & 0 \\  0 & 0 & 1 \end{bmatrix}$, 
+$v$ is observation noise. \\ \\
+カルマンフィルタの更新フェーズでは式6−10の式で観測誤差共分散行列$S$の更新，カルマンゲイン$K$の修正，推定状態量$\hat{x}$の更新を行う．
 \begin{equation}
-    y_{k} = z_{k} - H\hat{x}_{k}
+    y_{t} = z_{t} - H\hat{x}_{t}
     \label{eq:6}
 \end{equation}
 %
 %
 \begin{equation}
-    S_{k} = R + HP_{k}H^{T}
+    S_{t} = R + HP_{t}H^{T}
     \label{eq:7}
 \end{equation}
 %
 %
 \begin{equation}
-    \hat{x}_{k} = \hat{x}_{k}+K_{k}y_{k}
+K_{t} = P_{t}H^{T}S_{t}^{-1}
+    \label{eq:8}
+\end{equation}
+\begin{equation}
+    \hat{x}_{t} = \hat{x}_{t}+K_{t}y_{t}
     \label{eq:8}
 \end{equation}
 
 \begin{equation}
-    P_{k} = (I-K_{k})P_{k}(I-K_{k})^{T} + K_{k}RK_{k}
+    P_{t} = (I-K_{t}H^{T})P_{t}(I-K_{t}H^{T})^{T} + K_{t}RK_{t}^{T}
     \label{eq:9}
 \end{equation}
+%
+ただし，Rは観測の共分散行列で，$R = \begin{bmatrix} x_{x}^{2} & 0 & 0 \\  0 & x_{y}^{2} & 0 \\  0 & 0 & x_{\theta}^{2} \end{bmatrix}$\\
+
 
 
 \section{カルマンフィルタに用いる分散の取得実験}
